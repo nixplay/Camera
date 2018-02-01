@@ -4,7 +4,7 @@
 //
 //  Created by wang on 2017/5/28.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "RunsCameraView.h"
 #import "RunsCameraKit.h"
@@ -142,7 +142,7 @@
 - (void)buttonView:(UIView *)button didClickTap:(UITapGestureRecognizer *)tapGes {
     [RunsCameraManager captureStillImageCompleted:^(UIImage * _Nonnull stillImage) {
         if (!stillImage) {
-            RCKLogEX(@"拍照后转换图层失败得到的图片为空")
+            RCKLogEX(@"switch layer after taking picture successed picture is nil")
             return;
         }
         if (_delegate && [_delegate respondsToSelector:@selector(cameraView:captureStillImage:)]) {
@@ -241,7 +241,7 @@
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = RCKUIColorFromRGB(0xd8d8d8);
     label.font = [UIFont systemFontOfSize:14];
-    label.text = @"轻触拍照，按住摄像";
+    label.text = @"Tap for photo, press and hold to recording";
     promptPanelLabel = label;
     return promptPanelLabel;
 }

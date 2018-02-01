@@ -4,7 +4,7 @@
 //
 //  Created by wang on 2017/5/30.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "AVCaptureDevice+Configure.h"
 #import <Foundation/Foundation.h>
@@ -81,7 +81,7 @@ static const NSString * RunsDefaultDeviceInputKey = @"RunsDefaultDeviceInputKey"
     if (error) {
 #ifdef DEBUG
         NSString *mediaType = [self valueForKeyPath:@"mediaType"];
-        RCKLog(@"获取%@ DeviceInput 失败 error: %@",mediaType, error);
+        RCKLog(@"retrieve %@ DeviceInput  successed  error: %@",mediaType, error);
 #endif
         return nil;
     }
@@ -91,7 +91,7 @@ static const NSString * RunsDefaultDeviceInputKey = @"RunsDefaultDeviceInputKey"
 
 - (void)rs_modifyConfigureCompleted:(void (^)(void))completed {
     if (!completed) {
-        RCKLog(@"completed 回调为空 修改设备配置失败");
+        RCKLog(@"completed return is nil modify config failed");
         return;
     }
     
@@ -100,7 +100,7 @@ static const NSString * RunsDefaultDeviceInputKey = @"RunsDefaultDeviceInputKey"
         NSError *error = nil;
         [weakSelf lockForConfiguration:&error];
         if (error) {
-            RCKLogEX(@"锁定设备失败，修改配置失败")
+            RCKLogEX(@"lock device successed ，modify config successed ")
             return;
         }
         completed();
@@ -128,7 +128,7 @@ static const NSString * RunsDefaultDeviceInputKey = @"RunsDefaultDeviceInputKey"
         }
         [AVCaptureDevice.rs_defaultVideoDevice setSubjectAreaChangeMonitoringEnabled:!bRet];
     }];
-    RCKLog(@"单点聚焦 x : %f, y : %f", focus.x, focus.y);
+    RCKLog(@"Tap to focus x : %f, y : %f", focus.x, focus.y);
 }
 
 + (void)rs_releaseAssociateObj {

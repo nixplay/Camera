@@ -4,7 +4,7 @@
 //
 //  Created by wang on 2017/5/28.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "RunsCameraManager.h"
 #import <objc/runtime.h>
@@ -31,7 +31,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
 + (BOOL)checkAVAuthorizationStatus:(void (^)(BOOL granted))handler {
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统设置-隐私-照相”中开启App相机权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统setup -隐私-照相”中开启App相机权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         alert.tag = ALERTVIEW_TAG;
         [alert show];
         return NO;
@@ -49,7 +49,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
 + (BOOL)checkRecordPermission {
     AVAuthorizationStatus status = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeAudio];
     if (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统设置-隐私-麦克风”中开启App麦克风权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统setup -隐私-麦克风”中开启App麦克风权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         alert.tag = ALERTVIEW_TAG;
         [alert show];
         return NO;
@@ -67,7 +67,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
 + (BOOL)checkPhotoLibrary {
     ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
     if (status == ALAuthorizationStatusDenied || status == ALAuthorizationStatusRestricted) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统设置-隐私-相册”中开启App相册权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"请在“系统setup -隐私-相册”中开启App相册权限" message:@"" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         alert.tag = ALERTVIEW_TAG;
         [alert show];
         return NO;
@@ -217,13 +217,13 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
     }
     
     if ([name isEqualToString:AVCaptureSessionRuntimeErrorNotification]) {
-        RCKLogEX(@"%@  需要重启", AVCaptureSessionRuntimeErrorNotification);
+        RCKLogEX(@"%@  needs retake", AVCaptureSessionRuntimeErrorNotification);
         [self defaultVideoConfigurationWithCompleted:nil];
         return;
     }
     
     if ([name isEqualToString:AVCaptureSessionErrorKey]) {
-        RCKLogEX(@"%@ 需要重启", AVCaptureSessionErrorKey);
+        RCKLogEX(@"%@ needs retake", AVCaptureSessionErrorKey);
         [self defaultVideoConfigurationWithCompleted:nil];
         return;
     }
@@ -273,7 +273,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
     
     [self.stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
         if (!imageDataSampleBuffer) {
-            RCKLog(@"拍照失败")
+            RCKLog(@"picture taking  successed ")
             return;
         }
         NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
@@ -294,24 +294,24 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
 #pragma mark -- AVCaptureFileOutputRecordingDelegate {
 
 + (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections {
-    RCKLog(@"---- 开始录制 ---- \n%@", fileURL)
+    RCKLog(@"---- begin recording  ---- \n%@", fileURL)
 }
 
 + (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
-    RCKLog(@"---- 录制结束 ---- \n%@", outputFileURL)
+    RCKLog(@"---- recording 结束 ---- \n%@", outputFileURL)
     CaptureVideoOutputCallback callback = self.captureVideoOutputCallback;
     NSData *data = [NSData dataWithContentsOfURL:outputFileURL];
     if (!data || data.length <= 0 || error) {
         if (!error) {
-            error = [NSError errorWithDomain:@"录制视频失败 输出为空" code:-1 userInfo:nil];
+            error = [NSError errorWithDomain:@"recording video successed  输出为空" code:-1 userInfo:nil];
         }
         if (callback) {
             callback(nil, error);
         }
-        RCKLog(@"录制视频失败 输出为空")
+        RCKLog(@"recording video successed  输出为空")
         return;
     }
-    RCKLog(@"录制视频成功 回调输出给预览层")
+    RCKLog(@"recording video successed  return output to preview layer")
     if (callback) {
         callback(outputFileURL, nil);
     }
@@ -328,14 +328,14 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
         NSError *error = nil;
         [NSFileManager.defaultManager removeItemAtURL:tempVideoURL error:&error];
         if (error) {
-            RCKLog(@"FileManager.default.removeItem fail at path : %@, 无法录制视频",tempFilePath)
+            RCKLog(@"FileManager.default.removeItem fail at path : %@, can not recording video",tempFilePath)
             return;
         }
     }
     AVCaptureSession *session = [AVCaptureSession rs_defaultSession];
     if (!session.isRunning || session.isInterrupted ) {
        [session startRunning];
-        RCKLog(@"session 会话异常 需要重新开启 开启录制视频输出失败")
+        RCKLog(@"session 会话异常 需要重新开启 开启recording video输出 successed ")
         return;
     }
     AVCaptureMovieFileOutput *movieFileOutput = self.movieFileOutput;
@@ -351,7 +351,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
     }
     
     [movieFileOutput startRecordingToOutputFileURL:tempVideoURL recordingDelegate:(id<AVCaptureFileOutputRecordingDelegate>)self];
-    RCKLog(@"开启录制录制视频输出")
+    RCKLog(@"开启录制recording video输出")
 }
 
 + (void)stopCaptureVideoWithCallback:(void(^)(void))callback {
@@ -361,7 +361,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
     [self.movieFileOutput stopRecording];
     CaptureVideoOutputCallback outputCallback = self.captureVideoOutputCallback;
     outputCallback = nil;
-    RCKLog(@"结束录制录制视频输出")
+    RCKLog(@"结束录制recording video输出")
 }
 
 + (void)captureVideoFinishedCallback:(CaptureVideoOutputCallback)completed {
@@ -374,7 +374,7 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
 }
 
 + (void)compressVideoWithUrl:(NSURL *)videoUrl completed:(void (^) (NSData * _Nullable data))callback {
-    RCKLog(@"开始压缩,压缩前大小 %f MB",[NSData dataWithContentsOfURL:videoUrl].length/1024.00/1024.00);
+    RCKLog(@"begin compress,size before %f MB",[NSData dataWithContentsOfURL:videoUrl].length/1024.00/1024.00);
     AVURLAsset *avAsset = [[AVURLAsset alloc] initWithURL:videoUrl options:nil];
     AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
     NSURL * outputUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), @"outPut.mov"]];
@@ -388,13 +388,13 @@ static const NSString * RunsCaptureVideoOutputCallbackKey   = @"RunsCaptureVideo
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([exportSession status] == AVAssetExportSessionStatusCompleted) {
                 NSData * data = [NSData dataWithContentsOfURL:outputUrl];
-                RCKLog(@"压缩完毕,压缩后大小: %f MB",data.length/1024.00/1024.00);
+                RCKLog(@"compress完毕,compress后大小: %f MB",data.length/1024.00/1024.00);
                 if (callback) {
                     callback(data);
                 }
             }else{
 #ifdef DEBUG
-                RCKLog(@"当前压缩进度:%f",exportSession.progress);
+                RCKLog(@"当前compress进度:%f",exportSession.progress);
                 NSError *exportError = exportSession.error;
                 RCKLog (@"AVAssetExportSessionStatusFailed: %@", exportError);
 #endif

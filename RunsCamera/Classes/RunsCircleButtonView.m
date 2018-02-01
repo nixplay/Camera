@@ -4,7 +4,7 @@
 //
 //  Created by Dev_Wang on 2017/5/31.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "RunsCircleButtonView.h"
 #import "RunsCameraKit.h"
@@ -100,7 +100,7 @@
         
     }];
 }
-#pragma mark -- 点击事件
+#pragma mark -- tap event
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
@@ -111,10 +111,10 @@
 }
 
 - (void)onClickTap:(UITapGestureRecognizer *)tapGes {
-    RCKLog(@"点按拍照")
+    RCKLog(@"tap to picture taking")
     
     if (isVideoCapture) {
-        RCKLog(@"视频捕捉状态 不能进行拍照");
+        RCKLog(@"video capturing unable to picture taking ");
         return;
     }
     if (_delegate && [_delegate respondsToSelector:@selector(buttonView:didClickTap:)]) {
@@ -131,12 +131,12 @@
     }
     
     if (!_delegate) {
-        RCKLog(@"长按结束没有代理回调")
+        RCKLog(@"long press end delegate is nil")
         return;
     }
     
     if (UIGestureRecognizerStateBegan == state) {
-        RCKLog(@"长按录像开始")
+        RCKLog(@"long press recording begin ")
         isVideoCapture = YES;
         isEffectiveVideo = NO;
         [self expandAnimation];
@@ -147,10 +147,10 @@
     }
     
     if (UIGestureRecognizerStateEnded == state) {
-        RCKLog(@"长按录像结束")
+        RCKLog(@"long press recording end")
         isVideoCapture = NO;
         if (!isEffectiveVideo && [_delegate respondsToSelector:@selector(buttonView:didClickTap:)]) {
-            RCKLog(@"拍摄时长低于一秒 转换给最后一秒拍照")
+            RCKLog(@"video length shorter than 1 sec last 1 sec picture taking ")
             [_delegate buttonView:self didClickTap:tapGes];
             [self resume];
             return;
@@ -246,7 +246,7 @@ static int count = 0;
         if (count > (_videoInterval*100)) {
             [circleProgressView setProgress:1.0 Animated:NO];
             [weakSelf captureVideoOver];
-            RCKLogEX(@"录视频Over")
+            RCKLogEX(@"record video end")
             return;
         }
         count += 1;

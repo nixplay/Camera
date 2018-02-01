@@ -59,7 +59,7 @@
 #pragma mark -- RunsCameraViewDelegate
 
 - (void)cameraViewDidDismissed:(UIView *)cameraView {
-    RCKLog(@"退出相机模式")
+    RCKLog(@"dismiss camera")
     [self dismissViewControllerAnimated:YES completion:nil];
     if (_delegate && [_delegate respondsToSelector:@selector(cameraViewControllerDidDismissed:)]) {
         [_delegate cameraViewControllerDidDismissed:self];
@@ -67,7 +67,7 @@
 }
 
 - (void)cameraViewDidSelectedAlnbum:(UIView *)cameraView {
-    RCKLogEX(@"点击 选取相册")
+    RCKLogEX(@"tab to select camera roll")
     if (_delegate && [_delegate respondsToSelector:@selector(cameraViewControllerDidSelectedAlnbum:)]) {
         [_delegate cameraViewControllerDidSelectedAlnbum:self];
     }
@@ -75,10 +75,10 @@
 
 - (void)cameraView:(UIView *)cameraView captureStillImage:(UIImage *)image {
     if (!image) {
-        RCKLog(@"照片已损坏")
+        RCKLog(@"image broken")
         return;
     }
-    RCKLogEX(@"预览 照片")
+    RCKLogEX(@"preview photo")
     if (![previewView conformsToProtocol:@protocol(RunsCameraPreviewViewProtocol)]) {
         RCKLog(@" %@ Not implementation RunsCameraPreviewViewProtocol", previewView)
         return;
@@ -91,11 +91,11 @@
 - (void)cameraView:(UIView *)cameraView captureVideoURL:(NSURL *)outputFileURL {
     
     if (outputFileURL.absoluteString.length <= 0) {
-        RCKLog(@"视频已损坏")
+        RCKLog(@"video was broken")
         return;
     }
     
-    RCKLogEX(@"预览 视频")
+    RCKLogEX(@"preview video")
     if (![previewView conformsToProtocol:@protocol(RunsCameraPreviewViewProtocol)]) {
         RCKLog(@" %@ Not implementation RunsCameraPreviewViewProtocol", previewView)
         return;
@@ -108,7 +108,7 @@
 #pragma mark -- RunsCameraPreviewViewDelegate
 
 - (void)previewDidCancel:(UIView *)preview {
-    RCKLogEX(@"预览 返回继续拍照")
+    RCKLogEX(@"preview return continue photo taking")
     if (![previewView conformsToProtocol:@protocol(RunsCameraPreviewViewProtocol)]) {
         RCKLog(@" %@ Not implementation RunsCameraPreviewViewProtocol", previewView)
         return;
@@ -119,14 +119,14 @@
 }
 
 - (void)preview:(UIView *)preview captureStillImage:(UIImage *)image {
-    RCKLogEX(@"预览结束  回调照片")
+    RCKLogEX(@"Preview finished  return picture")
     if (_delegate && [_delegate respondsToSelector:@selector(cameraViewController:captureStillImage:)]) {
         [_delegate cameraViewController:self captureStillImage:image];
     }
 }
 
 - (void)preview:(UIView *)preview captureVideoAsset:(RunsVideoAsset *)asset {
-    RCKLogEX(@"预览结束  回调视频")
+    RCKLogEX(@"Preview finished  return video")
     if (_delegate && [_delegate respondsToSelector:@selector(cameraViewController:captureVideoAsset:)]) {
         [_delegate cameraViewController:self captureVideoAsset:asset];
     }
@@ -139,3 +139,4 @@
 
 
 @end
+

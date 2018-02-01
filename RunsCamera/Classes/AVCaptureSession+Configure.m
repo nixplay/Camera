@@ -4,7 +4,7 @@
 //
 //  Created by wang on 2017/5/30.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "AVCaptureSession+Configure.h"
 #import <objc/runtime.h>
@@ -39,13 +39,13 @@ static const NSString * RunsDefaultPreviewLayerKey  = @"RunsDefaultPreviewLayerK
     if (AVCaptureDevicePositionFront == curPosition) {
         if ([self canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
             [self setSessionPreset:AVCaptureSessionPreset1280x720];
-            RCKLog(@"前置摄像头配置 720p")
+            RCKLog(@"front camera config  720p")
         }else if ([self canSetSessionPreset:AVCaptureSessionPresetHigh]) {
             [self setSessionPreset:AVCaptureSessionPresetHigh];
-            RCKLog(@"前置摄像头配置 预设高质量像素")
+            RCKLog(@"front camera config  AVCaptureSessionPresetHigh")
         }else{
             [self setSessionPreset:AVCaptureSessionPreset640x480];
-            RCKLog(@"前置摄像头配置 480p")
+            RCKLog(@"front camera config  480p")
         }
         if (needCommit) {
             [self commitConfiguration];
@@ -55,16 +55,16 @@ static const NSString * RunsDefaultPreviewLayerKey  = @"RunsDefaultPreviewLayerK
     
     if ([self canSetSessionPreset:AVCaptureSessionPreset1920x1080]) {
         [self setSessionPreset:AVCaptureSessionPreset1920x1080];
-        RCKLog(@"后置摄像头配置 1080p")
+        RCKLog(@"back camera config 1080p")
     }else if ([self canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
         [self setSessionPreset:AVCaptureSessionPreset1280x720];
-        RCKLog(@"后置摄像头配置 720p")
+        RCKLog(@"back camera config 720p")
     } else if ([self canSetSessionPreset:AVCaptureSessionPresetHigh]) {
         [self setSessionPreset:AVCaptureSessionPresetHigh];
-        RCKLog(@"后置摄像头配置 预设高质量像素")
+        RCKLog(@"back camera config AVCaptureSessionPresetHigh")
     }else{
         [self setSessionPreset:AVCaptureSessionPreset640x480];
-        RCKLog(@"后置摄像头配置 480p")
+        RCKLog(@"back camera config 480p")
     }
     if (needCommit) {
         [self commitConfiguration];
@@ -107,7 +107,7 @@ static const NSString * RunsDefaultPreviewLayerKey  = @"RunsDefaultPreviewLayerK
 
 - (void)rs_onSwitchCamera {
     if ([AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo].count <= 1) {
-        RCKLog(@"只有一个摄像头 无法进行切换");
+        RCKLog(@"only one camera can not be switched");
         return;
     }
     CATransition *animation = [CATransition new];
@@ -131,7 +131,7 @@ static const NSString * RunsDefaultPreviewLayerKey  = @"RunsDefaultPreviewLayerK
     AVCaptureDeviceInput *newInput = [AVCaptureDeviceInput deviceInputWithDevice:curVideoDevice error:&error];
     if (error) {
         [self commitConfiguration];
-        RCKLog(@"初始化 AVCaptureDeviceInput newDeviceInput 失败")
+        RCKLog(@"initialized AVCaptureDeviceInput newDeviceInput  successed ")
         return;
     }
     for (AVCaptureDeviceInput *oldInput in self.inputs) {
@@ -141,7 +141,7 @@ static const NSString * RunsDefaultPreviewLayerKey  = @"RunsDefaultPreviewLayerK
     }
     if (![self canAddInput:newInput]) {
         [self commitConfiguration];
-        RCKLog(@"加载 AVCaptureDeviceInput newDeviceInput 失败")
+        RCKLog(@"Added AVCaptureDeviceInput newDeviceInput  successed ")
         return;
     }
     

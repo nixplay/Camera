@@ -4,7 +4,7 @@
 //
 //  Created by wang on 2017/5/28.
 //  Copyright © 2017年 www.dev_wang.com. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import "RunsCameraPreviewView.h"
 #import "RunsCameraPreviewViewProtocol.h"
@@ -46,7 +46,7 @@
 
 - (void)showMediaContentImage:(UIImage *)image withType:(MediaContentType)type {
     contentType = type;
-    RCKLog(@"预览图片");
+    RCKLog(@"preview picture");
     self.stillImageView.hidden = NO;
     playerLayer.hidden = YES;
     [self.stillImageView setImage:image];
@@ -71,7 +71,7 @@
         [player play];
     });
     
-    RCKLog(@"预览视频 outputURL: %@",URLPath);
+    RCKLog(@"previewvideo outputURL: %@",URLPath);
 }
 
 - (void)onPlaybackFinished {
@@ -102,12 +102,12 @@
 
 - (void)onConfirmContent {
     if (!_delegate) {
-        RCKLog(@"代理回调为空， 无法返回所选的照片或者视频")
+        RCKLog(@"delegate empty， can not can not reuturn select photo or video")
         return;
     }
     if (Enum_StillImage == contentType && stillImageView.image) {
         if (![_delegate respondsToSelector:@selector(preview:captureStillImage:)]) {
-            RCKLog(@"回调代理类 并未实现 preview:captureStillImage:")
+            RCKLog(@"delegate is not response to selector preview:captureStillImage:")
             return;
         }
         [_delegate preview:self captureStillImage:stillImageView.image];
@@ -117,19 +117,19 @@
     
     if (Enum_VideoURLPath == contentType && videoURLPath) {
         if (![_delegate respondsToSelector:@selector(preview:captureVideoAsset:)]) {
-            RCKLog(@"回调代理类 并未实现 preview:captureVideoURL:")
+            RCKLog(@"delegate is not response to selector preview:captureVideoURL:")
             return;
         }
         UIView *delegateView = [UIApplication.sharedApplication.delegate window];
-        [delegateView makeLoadingActivity:@"准备中..."];
+        [delegateView makeLoadingActivity:@"parpring ..."];
         UIImage *frame = [UIImage rs_fetchVideoPreViewImageWithUrl:videoURLPath];
         [RunsCameraManager compressVideoWithUrl:videoURLPath completed:^(NSData * _Nullable data) {
             [delegateView hideLoadingActivity];
             if (!data) {
-                RCKLogEX(@"压缩失败");
+                RCKLogEX(@"compress failed ");
                 return;
             }
-            [delegateView makeToast:@"压缩成功" duration:1.0 position:CSToastPositionCenter];
+            [delegateView makeToast:@"compress successed " duration:1.0 position:CSToastPositionCenter];
             NSTimeInterval duration = player.currentItem.duration.value / player.currentItem.duration.timescale;
             AVAsset *asset = player.currentItem.asset;
             RunsVideoAsset *videoAsset = [[RunsVideoAsset alloc] initWithData:data preview:frame duration:duration asset:asset];

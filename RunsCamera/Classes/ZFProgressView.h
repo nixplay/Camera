@@ -4,7 +4,7 @@
 //
 //  Created by macOne on 15/9/23.
 //  Copyright © 2015年 WZF. All rights reserved.
-//
+//  Modified by James Kong on 2018/2/1
 
 #import <UIKit/UIKit.h>
 
@@ -39,24 +39,24 @@ IB_DESIGNABLE
 //数字字体颜色
 @property (nonatomic,strong) IBInspectable UIColor *digitTintColor;
 
-//设置图片
+//setup  picture
 @property (nonatomic,strong) IBInspectable UIImage *image;
 
 //动画持续时间。 单位：秒
 @property (nonatomic) CGFloat timeDuration;
 
 /*
- 设置每个格子的宽度与线条宽度要注意
+ setup 每个格子的宽度与线条宽度要注意
  由于使用原点画圆弧的原因，距离原点越近，弧长越短
  
  要求：
- 设置的线条宽度lineWidth < GapWidth
+ setup 的线条宽度lineWidth < GapWidth
  */
 
 
 //格子之间的宽度
 @property (nonatomic,assign) IBInspectable CGFloat GapWidth;
-//设置线条宽度 （进度条宽度 = 背景线条宽度）
+//setup 线条宽度 （进度条宽度 = 背景线条宽度）
 @property (nonatomic,assign) IBInspectable CGFloat lineWidth;
 
 //style

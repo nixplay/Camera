@@ -195,7 +195,7 @@
 				TargetAttributes = {
 					21B2ADF01EF4189700CD80A4 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = TFSRT6S8Q5;
+						DevelopmentTeam = FLA95J3G7U;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -374,7 +374,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = TFSRT6S8Q5;
+				DEVELOPMENT_TEAM = FLA95J3G7U;
 				INFOPLIST_FILE = RunsCamera/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wanglink.Camera;
@@ -386,7 +386,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = TFSRT6S8Q5;
+				DEVELOPMENT_TEAM = FLA95J3G7U;
 				INFOPLIST_FILE = RunsCamera/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wanglink.Camera;
